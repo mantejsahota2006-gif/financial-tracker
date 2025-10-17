@@ -8,8 +8,9 @@ Briefly describe what this Java console application does. Mention its purpose an
 
 List the user stories that guided the development of your application. Format these stories as: "As a [type of user], I want [some goal] so that [some reason]."
 
-- As a user, I want to be able to input my data, so that the application can process it accordingly.
-- As a user, I want to receive immediate feedback, so I can understand what to do next.
+- As a user, I want to add a deposit transaction, so that I can record money I’ve received.
+- As a user, I want to record payments I make, so that I can track expenses and know where my money goes.
+- As a user, I want to view my transaction history and reports, so that I can see all my deposits, payments, and summaries over time.
 
 ## Setup
 
