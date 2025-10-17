@@ -1,7 +1,8 @@
 package com.pluralsight;
 
-import java.io.File;
+import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -48,7 +49,6 @@ public class FinancialTracker {
             System.out.println("L) Ledger");
             System.out.println("X) Exit");
 
-            System.out.println("Enter your choice: ");
             String input = scanner.nextLine().trim();
 
             switch (input.toUpperCase()) {
@@ -60,14 +60,11 @@ public class FinancialTracker {
             }
         }
         scanner.close();
-        System.out.println("Bye.");
     }
 
     /* ------------------------------------------------------------------
        File I/O
        ------------------------------------------------------------------ */
-
-
 
     /**
      * Load transactions from FILE_NAME.
@@ -75,9 +72,39 @@ public class FinancialTracker {
      * • Each line looks like: date|time|description|vendor|amount
      */
     public static void loadTransactions(String fileName) {
-        // TODO: create file if it does not exist, then read each line,
-        //       parse the five fields, build a Transaction object,
-        //       and add it to the transactions list.
+        File file = new File(fileName);
+
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            System.out.println("Error creating file!");
+            e.printStackTrace();
+            return;
+        }
+
+        try {
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+
+            while((line = bufferedReader.readLine()) != null) {
+                String[] parts = line.split("\\|");
+
+                if (parts.length != 5) {
+                    System.out.println("Skipping malformed transaction: " + line);
+                    continue;
+                }
+
+                LocalDate date = LocalDate.parse(parts[0], DATE_FMT);
+                LocalTime time = LocalTime.parse(parts[1], TIME_FMT);
+                double amount = Double.parseDouble(parts[4]);
+
+                Transaction transaction = new Transaction(date, time, parts[2], parts[3], amount);
+                transactions.add(transaction);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /* ------------------------------------------------------------------
@@ -91,7 +118,41 @@ public class FinancialTracker {
      * Store the amount as-is (positive) and append to the file.
      */
     private static void addDeposit(Scanner scanner) {
-        // TODO
+        System.out.println("Enter date and time (yyyy-MM-dd HH:mm:ss): ");
+        String dateTimeInput = scanner.nextLine();
+
+        LocalDateTime dateTime = LocalDateTime.parse(dateTimeInput, DATETIME_FMT);
+
+        LocalDate date = dateTime.toLocalDate();
+        LocalTime time = dateTime.toLocalTime();
+
+        System.out.println("Enter description: ");
+        String description = scanner.nextLine();
+
+        System.out.println("Enter vendor: ");
+        String vendor = scanner.nextLine();
+
+        System.out.println("Enter amount: ");
+        double amount = Double.parseDouble(scanner.nextLine());
+
+        if (amount <= 0) {
+            System.out.println("Deposit amount must be greater than 0!");
+            return;
+        }
+
+        Transaction transaction = new Transaction(date, time, description, vendor, amount);
+        transactions.add(transaction);
+
+        try {
+            FileWriter fileWriter = new FileWriter(FILE_NAME, true);
+            fileWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amount + "\n");
+            fileWriter.close();
+            System.out.println("Deposit added successfully\n");
+        } catch (IOException e) {
+            System.out.println("Error adding deposit. Please check your inputs.");
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -100,8 +161,7 @@ public class FinancialTracker {
      * then converted to a negative amount before storing.
      */
     private static void addPayment(Scanner scanner) {
-        // TODO
-    }
+
 
     /* ------------------------------------------------------------------
        Ledger menu
@@ -133,42 +193,14 @@ public class FinancialTracker {
     /* ------------------------------------------------------------------
        Display helpers: show data in neat columns
        ------------------------------------------------------------------ */
-    private static void displayLedger() { /* TODO – print all transactions in column format */ }
+    private static void displayLedger() {
 
-    private static void displayDeposits() { /* TODO – only amount > 0               */ }
-
-    private static void displayPayments() { /* TODO – only amount < 0               */ }
 
     /* ------------------------------------------------------------------
        Reports menu
        ------------------------------------------------------------------ */
     private static void reportsMenu(Scanner scanner) {
-        boolean running = true;
-        while (running) {
-            System.out.println("Reports");
-            System.out.println("Choose an option:");
-            System.out.println("1) Month To Date");
-            System.out.println("2) Previous Month");
-            System.out.println("3) Year To Date");
-            System.out.println("4) Previous Year");
-            System.out.println("5) Search by Vendor");
-            System.out.println("6) Custom Search");
-            System.out.println("0) Back");
 
-            String input = scanner.nextLine().trim();
-
-            switch (input) {
-                case "1" -> {/* TODO – month-to-date report */ }
-                case "2" -> {/* TODO – previous month report */ }
-                case "3" -> {/* TODO – year-to-date report   */ }
-                case "4" -> {/* TODO – previous year report  */ }
-                case "5" -> {/* TODO – prompt for vendor then report */ }
-                case "6" -> customSearch(scanner);
-                case "0" -> running = false;
-                default -> System.out.println("Invalid option");
-            }
-        }
-    }
 
     /* ------------------------------------------------------------------
        Reporting helpers
@@ -177,9 +209,7 @@ public class FinancialTracker {
         // TODO – iterate transactions, print those within the range
     }
 
-    private static void filterTransactionsByVendor(String vendor) {
-        // TODO – iterate transactions, print those with matching vendor
-    }
+
 
     private static void customSearch(Scanner scanner) {
         // TODO – prompt for any combination of date range, description,
