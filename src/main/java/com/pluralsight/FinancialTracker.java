@@ -161,7 +161,42 @@ public class FinancialTracker {
      * then converted to a negative amount before storing.
      */
     private static void addPayment(Scanner scanner) {
+        System.out.println("Enter date and time (yyyy-MM-dd HH:mm:ss): ");
+        String dateTimeInput = scanner.nextLine();
 
+        LocalDateTime dateTime = LocalDateTime.parse(dateTimeInput, DATETIME_FMT);
+
+        LocalDate date = dateTime.toLocalDate();
+        LocalTime time = dateTime.toLocalTime();
+
+        System.out.println("Enter description: ");
+        String description = scanner.nextLine();
+
+        System.out.println("Enter vendor: ");
+        String vendor = scanner.nextLine();
+
+        System.out.println("Enter amount: ");
+        double amount = Double.parseDouble(scanner.nextLine());
+
+        if (amount <= 0) {
+            System.out.println("Payment amount must be greater than 0!");
+            return;
+        }
+        amount = -amount;
+
+        Transaction transaction = new Transaction(date, time, description, vendor, amount);
+        transactions.add(transaction);
+
+        try {
+            FileWriter fileWriter = new FileWriter(FILE_NAME, true);
+            fileWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amount + "\n");
+            fileWriter.close();
+            System.out.println("Payment added successfully!\n");
+        } catch (IOException e) {
+            System.out.println("Error adding payment. Please check your inputs.");
+            e.printStackTrace();
+        }
+    }
 
     /* ------------------------------------------------------------------
        Ledger menu
