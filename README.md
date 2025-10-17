@@ -8,8 +8,9 @@ Briefly describe what this Java console application does. Mention its purpose an
 
 List the user stories that guided the development of your application. Format these stories as: "As a [type of user], I want [some goal] so that [some reason]."
 
-- As a user, I want to be able to input my data, so that the application can process it accordingly.
-- As a user, I want to receive immediate feedback, so I can understand what to do next.
+- As a user, I want to add a deposit transaction, so that I can record money I’ve received.
+- As a user, I want to record payments I make, so that I can track expenses and know where my money goes.
+- As a user, I want to view my transaction history and reports, so that I can see all my deposits, payments, and summaries over time.
 
 ## Setup
 
@@ -39,7 +40,9 @@ Follow these steps to get your application running within IntelliJ IDEA:
 
 Include screenshots or GIFs that show your application in action. Use tools like [Giphy Capture](https://giphy.com/apps/giphycapture) to record a GIF of your application.
 
-![Application Screenshot](path/to/your/screenshot.png)
+![Application Screenshot](<img width="898" height="829" alt="Screenshot 2025-10-16 233622" src="https://github.com/user-attachments/assets/b177757c-3330-46a2-82d4-842c5b90bc20" />
+
+
 
 ## Future Work
 
@@ -52,17 +55,16 @@ Outline potential future enhancements or functionalities you might consider addi
 
 List resources such as tutorials, articles, or documentation that helped you during the project.
 
-- [Java Programming Tutorial](https://www.example.com)
+- IntelliJ
+- Java
 - [Effective Java](https://www.example.com)
 
 ## Team Members
 
-- **Name 1** - Specific contributions or roles.
-- **Name 2** - Specific contributions or roles.
+- Mantej - code, project board, readme.
 
 ## Thanks
 
 Express gratitude towards those who provided help, guidance, or resources:
 
-- Thank you to [Mentor's Name] for continuous support and guidance.
-- A special thanks to all teammates for their dedication and teamwork.
+- Thank you to Raymond for continuous support and guidance.
