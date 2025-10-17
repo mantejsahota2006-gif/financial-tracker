@@ -266,7 +266,36 @@ public class FinancialTracker {
        Reports menu
        ------------------------------------------------------------------ */
     private static void reportsMenu(Scanner scanner) {
+        boolean running = true;
+        while (running) {
+            System.out.println("Reports");
+            System.out.println("Choose an option:");
+            System.out.println("1) Month To Date");
+            System.out.println("2) Previous Month");
+            System.out.println("3) Year To Date");
+            System.out.println("4) Previous Year");
+            System.out.println("5) Search by Vendor");
+            System.out.println("6) Custom Search");
+            System.out.println("0) Back");
 
+            String input = scanner.nextLine().trim();
+
+            switch (input) {
+                case "1" -> {/* TODO – month-to-date report */ }
+                case "2" -> {/* TODO – previous month report */ }
+                case "3" -> {/* TODO – year-to-date report   */ }
+                case "4" -> {/* TODO – previous year report  */ }
+                case "5" -> {
+                    System.out.print("Enter vendor name: ");
+                    String vendor = scanner.nextLine();
+
+                }
+                case "6" -> customSearch(scanner);
+                case "0" -> running = false;
+                default -> System.out.println("Invalid option");
+            }
+        }
+    }
 
     /* ------------------------------------------------------------------
        Reporting helpers
