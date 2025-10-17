@@ -48,8 +48,9 @@ Include screenshots or GIFs that show your application in action. Use tools like
 
 Outline potential future enhancements or functionalities you might consider adding:
 
-- Additional feature to be developed.
-- Improvement of current functionalities.
+- Add more designs to make it more appealing.
+- Make a better GUI.
+- Add more comments to make code more clear.
 
 ## Resources
 
@@ -57,7 +58,8 @@ List resources such as tutorials, articles, or documentation that helped you dur
 
 - IntelliJ
 - Java
-- [Effective Java](https://www.example.com)
+- String methods
+- Potato Sensei
 
 ## Team Members
 
@@ -68,3 +70,4 @@ List resources such as tutorials, articles, or documentation that helped you dur
 Express gratitude towards those who provided help, guidance, or resources:
 
 - Thank you to Raymond for continuous support and guidance.
+- Thank you to all my peers for help.
