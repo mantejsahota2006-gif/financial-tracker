@@ -44,17 +44,17 @@ public class FinancialTracker {
         while (running) {
             System.out.println("Welcome to TransactionApp");
             System.out.println("Choose an option:");
-            System.out.println("D) Add Deposit");
-            System.out.println("P) Make Payment (Debit)");
-            System.out.println("L) Ledger");
+            System.out.println("1) Add Deposit");
+            System.out.println("2) Make Payment (Debit)");
+            System.out.println("3) Ledger");
             System.out.println("X) Exit");
 
             String input = scanner.nextLine().trim();
 
             switch (input.toUpperCase()) {
-                case "D" -> addDeposit(scanner);
-                case "P" -> addPayment(scanner);
-                case "L" -> ledgerMenu(scanner);
+                case "1" -> addDeposit(scanner);
+                case "2" -> addPayment(scanner);
+                case "3" -> ledgerMenu(scanner);
                 case "X" -> running = false;
                 default -> System.out.println("Invalid option");
             }
@@ -73,7 +73,6 @@ public class FinancialTracker {
      */
     public static void loadTransactions(String fileName) {
         File file = new File(fileName);
-
         try {
             file.createNewFile();
         } catch (IOException e) {
@@ -136,7 +135,7 @@ public class FinancialTracker {
         double amount = Double.parseDouble(scanner.nextLine());
 
         if (amount <= 0) {
-            System.out.println("Deposit amount must be greater than 0!");
+            System.out.println("Deposit amount has to be higher than 0.");
             return;
         }
 
@@ -280,15 +279,26 @@ public class FinancialTracker {
 
             String input = scanner.nextLine().trim();
 
+            LocalDate today = LocalDate.now();
             switch (input) {
-                case "1" -> {/* TODO – month-to-date report */ }
-                case "2" -> {/* TODO – previous month report */ }
-                case "3" -> {/* TODO – year-to-date report   */ }
-                case "4" -> {/* TODO – previous year report  */ }
+                case "1" -> filterTransactionsByDate(today.withDayOfMonth(1), today);
+                case "2" -> {
+                    LocalDate prevMonth = today.minusMonths(1);
+                    LocalDate start = prevMonth.withDayOfMonth(1);
+                    LocalDate end = prevMonth.withDayOfMonth(prevMonth.lengthOfMonth());
+                    filterTransactionsByDate(start, end);
+                }
+                case "3" -> filterTransactionsByDate(today.withMonth(1).withDayOfMonth(31), today);
+                case "4" -> {
+                    LocalDate prevYear = today.minusYears(1);
+                    LocalDate start = prevYear.withDayOfYear(1);
+                    LocalDate end = prevYear.withDayOfYear(prevYear.lengthOfYear());
+                    filterTransactionsByDate(start, end);
+                }
                 case "5" -> {
                     System.out.print("Enter vendor name: ");
                     String vendor = scanner.nextLine();
-
+                    filterTransactionsByVendor(vendor);
                 }
                 case "6" -> customSearch(scanner);
                 case "0" -> running = false;
@@ -302,9 +312,34 @@ public class FinancialTracker {
        ------------------------------------------------------------------ */
     private static void filterTransactionsByDate(LocalDate start, LocalDate end) {
         // TODO – iterate transactions, print those within the range
+        System.out.println("Showing transactions from " + start + " - " + end + ": ");
+        System.out.println("Date|Time|Description|Vendor|Amount");
+        System.out.println("======================================================================");
+        boolean found = false;
+        for (Transaction t: transactions) {
+            if ((t.getDate().isAfter(start) || t.getDate().isEqual(start)) &&
+                    (t.getDate().isBefore(end) || t.getDate().isEqual(end))) {
+                System.out.println(t);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No transaction found in this range.");
+        }
+        System.out.println("======================================================================");
     }
 
-
+    private static void filterTransactionsByVendor(String vendor) {
+        System.out.println("Showing all " + vendor + " transactions: ");
+        System.out.println("Date|Time|Description|Vendor|Amount");
+        System.out.println("======================================================================");
+        for (Transaction t: transactions) {
+            if (t.getVendor().equalsIgnoreCase(vendor)) {
+                System.out.println(t);
+            }
+        }
+        System.out.println("======================================================================");
+    }
 
     private static void customSearch(Scanner scanner) {
         // TODO – prompt for any combination of date range, description,
