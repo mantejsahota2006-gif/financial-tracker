@@ -2,7 +2,7 @@
 
 ## Description of the Project
 
-Briefly describe what this Java console application does. Mention its purpose and who the intended users are. Explain the main functionality and what problems it aims to solve.
+This is a financial transaction tracker that lets the user make deposits and payments, it also lets them see the transaction that they have made. It is designed to be very simple and user friendly, for all people. You cn also see the reports and the payments that have been made.
 
 ## User Stories
 
